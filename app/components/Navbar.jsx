@@ -45,7 +45,7 @@ const Navbar = () => {
 
 
   return (
-    <AppBar position="sticky" sx={useStyles}>
+    <AppBar position="fixed" sx={useStyles}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <WifiTetheringErrorTwoToneIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
