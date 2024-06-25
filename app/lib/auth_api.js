@@ -30,5 +30,5 @@ export const postJson = async ({ uri, body, headers }) => {
 };
 
 const getBaseUrl = () => {
-  return process.env.BASE_BE_URL || "http://localhost:8080/api/v1";
+  return process.env.BASE_BE_URL || "https://18da-114-124-149-142.ngrok-free.app/api/v1";
 };
