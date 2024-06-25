@@ -12,6 +12,10 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import WifiTetheringErrorTwoToneIcon from '@mui/icons-material/WifiTetheringErrorTwoTone';
+import { SignInBtn } from './SignInBtn';
+import { signOut } from '@/auth';
+import { doLogout } from '../actions';
+
 
 
 
@@ -30,9 +34,11 @@ const useStyles = {
 }
 const settings = ['Cart', 'My Orders', 'Dashboard', 'Logout'];
 
-const Navbar = () => {
+const Navbar = (user) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const {username} = user || {};
 
+  
   
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -48,7 +54,7 @@ const Navbar = () => {
     <AppBar position="fixed" sx={useStyles}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <WifiTetheringErrorTwoToneIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <WifiTetheringErrorTwoToneIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -66,7 +72,7 @@ const Navbar = () => {
           >
             PrettyDigits
           </Typography>
-          <WifiTetheringErrorTwoToneIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <WifiTetheringErrorTwoToneIcon  sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -93,11 +99,11 @@ const Navbar = () => {
 
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            {username ? ( <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
-            </Tooltip>
+            </Tooltip>) : (<SignInBtn/>)}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

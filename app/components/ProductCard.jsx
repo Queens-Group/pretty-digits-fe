@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from "./product-card.module.css"
+import styles from "./ProductCard.module.css"
 
 export function ProductCard({ simNumber, price, validity, description }){
   return (

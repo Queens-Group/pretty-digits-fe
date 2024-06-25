@@ -4,6 +4,7 @@ import { Container } from "@mui/material";
 import { ProductCard } from "./components/ProductCard";
 import SortSelect from "./components/Select";
 import BasicPagination from "./components/BasicPagination";
+import { SignInBtn } from "./components/SignInBtn";
 
 export default function Home() {
   const products = [{
@@ -82,6 +83,7 @@ export default function Home() {
       <div>
         <SortSelect/>
         <SortSelect/>
+        <SignInBtn/>
       </div>
       <div style={{display: 'flex', flexDirection: 'column', gap: 15}}>
       {products.map((product) => (
