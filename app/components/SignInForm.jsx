@@ -7,15 +7,17 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import AppRegistrationOutlinedIcon from "@mui/icons-material/AppRegistrationOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { signUp } from "../lib/auth_api";
+import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
+import IconButton from '@mui/material/IconButton';
 import { Backdrop, CircularProgress } from "@mui/material";
 import ReportIcon from "@mui/icons-material/Report";
 import AppAlert from "./AppAlert";
 import { useRouter } from "next/navigation";
+import { doCredentialLogin } from "../actions";
+import { postSignIn } from "../lib/auth_api";
+import { HomeMaxOutlined, HomeOutlined } from "@mui/icons-material";
 
 function Copyright(props) {
   return (
@@ -35,52 +37,48 @@ function Copyright(props) {
   );
 }
 
-export default function SignUpForm() {
+export default function SignInForm() {
   const [errors, setErrors] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isSuccess, setIsSuccess] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
   const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors({});
-    const data = new FormData(event.currentTarget);
-    data.set("role", "USER");
 
     try {
       setIsLoading(true);
-      const response = await signUp(data);
+      const formData = new FormData(event.currentTarget);
+      const credential = {
+        username: formData.get("username"),
+        password: formData.get("password"),
+      };
+      const response = await postSignIn(credential);
 
-      switch (response.code) {
-        case 400:
-          setErrors(response.data);
-          break;
-        case 409:
-          setErrors({
-            username: "username or phone already taken",
-            phone: "username or phone already taken",
-          });
-          break;
-        case 201:
-          setIsLoading(false);
-          setIsSuccess(true);
-          redirectToSignInPage();
-          break;
-        default:
-          setUnexpectedError(true);
-          break;
+      if (response.code === 200) {
+        await doCredentialLogin(response.data);
+        redirectToHomepage();
+      } else if (response.code === 401) {
+        setErrors({
+          username: "invalid credential",
+          password: "invalid credential",
+        });
+      } else if (response.code === 400) {
+        setErrors(response.data);
+      } else {
+        setUnexpectedError(true);
       }
     } catch (error) {
+      setIsLoading(false);
       setUnexpectedError(true);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const redirectToSignInPage = () => {
-    let timer = setTimeout(() => router.push("/auth/signin"), 2000);
-    return () => clearTimeout(timer);
+  const redirectToHomepage = () => {
+    router.push("/");
   };
 
   return (
@@ -91,15 +89,6 @@ export default function SignUpForm() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-
-      <AppAlert
-        title={"Success Register"}
-        color="success"
-        message="Registration successful. Please log in!"
-        show={isSuccess}
-        handleClose={() => setIsSuccess(false)}
-        icon={<CheckCircleIcon />}
-      />
 
       <AppAlert
         title={"Application Error"}
@@ -119,8 +108,18 @@ export default function SignUpForm() {
           alignItems: "center",
         }}
       >
+        <Grid
+          container
+          justifyContent="flex-start"
+        >
+          <Grid item>
+            <IconButton onClick={() => router.push("/")}>
+              <HomeOutlined fontSize="large" sx={{borderBottom: "solid 1px black"}}/>
+            </IconButton>
+          </Grid>
+        </Grid>
         <Avatar sx={{ m: 1, bgcolor: "#b79347" }}>
-          <AppRegistrationOutlinedIcon />
+          <LockOpenOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
@@ -135,20 +134,8 @@ export default function SignUpForm() {
             margin="normal"
             required
             fullWidth
-            id="fullname"
-            label="Full Name"
-            name="fullname"
-            autoComplete="name"
-            error={!!errors.fullName}
-            helperText={errors.fullName ? errors.fullName : ""}
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
             id="username"
-            label="Username"
+            label="Username/phone"
             name="username"
             error={!!errors.username}
             helperText={errors.username ? errors.username : ""}
@@ -156,18 +143,7 @@ export default function SignUpForm() {
             autoComplete="off"
             inputProps={{ autoComplete: "off" }}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="phone"
-            label="Mobile Phone"
-            name="phone"
-            autoComplete="phone"
-            error={!!errors.phone}
-            helperText={errors.phone ? errors.phone : ""}
-            autoFocus
-          />
+
           <TextField
             margin="normal"
             required
@@ -178,7 +154,7 @@ export default function SignUpForm() {
             id="password"
             error={!!errors.password}
             helperText={errors.password ? errors.password : ""}
-            autoComplete="new-password"
+            autoComplete="current-password"
             inputProps={{ autoComplete: "off" }}
           />
 
@@ -193,12 +169,12 @@ export default function SignUpForm() {
               ":hover": { bgcolor: "#a67c37" },
             }}
           >
-            Sign Up
+            Sign In
           </Button>
           <Grid container alignItems="center" justifyContent="center">
             <Grid item alignItems="center">
-              <Link href="/auth/signin" variant="body2">
-                {"Already have an account? Sign In"}
+              <Link href="/auth/signup" variant="body2">
+                {"Does not have an account yet? Sign Up"}
               </Link>
             </Grid>
           </Grid>

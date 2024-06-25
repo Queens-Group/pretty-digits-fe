@@ -10,15 +10,43 @@
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+
+.validityText {
+  font-style: italic;
+  color: grey;
+}
+
+
 .leftSide {
+  display: flex;
   flex: 2;
   background-color: #f8f9fa;
-  padding: 20px;
-  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
   font-size: 1.5em;
   color: #343a40;
+}
+
+.provider {
+  position: absolute;
+  color: white;
+  top: 0;
+  left: 0;
+  text-justify: left;
+  text-transform: capitalize;
+  letter-spacing: .05rem;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #b79347;
+  padding: 5px;
+  width: 50%;
+  border-bottom-right-radius: 15px;
+}
+
+.simNumber {
+  font-weight: bold;
 }
 
 .middleSide {
@@ -59,20 +87,7 @@
   text-overflow: ellipsis;
 }
 
-.addToCartButton {
-  background-color: #b79347; /* Gold color */
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
-}
 
-.addToCartButton:hover {
-  background-color: #a67c37; /* Darker gold for hover effect */
-}
 
 @media (max-width: 768px) {
   .card {
@@ -101,11 +116,22 @@
   .description {
     font-size: 0.9em;
   }
-  
-  .addToCartButton {
-    font-size: 0.9em;
-    padding: 8px 16px;
+
+  .provider {
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    text-justify: left;
+    font-size: 0.7rem;
+    font-weight: bold;
+    background-color: #b79347;
+    padding: 5px;
+    width: 70%;
+    border-bottom-right-radius: 13px;
   }
+  
+
 }
 
 @media (max-width: 480px) {
@@ -135,8 +161,19 @@
     font-size: 0.6em;
   }
   
-  .addToCartButton {
-    font-size: 0.3em;
-    padding: 6px 10px;
+
+
+  .provider {
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    text-justify: left;
+    font-size: 0.7rem;
+    font-weight: bold;
+    background-color: #b79347;
+    padding: 5px;
+    width: 70%;
+    border-bottom-right-radius: 13px;
   }
 }

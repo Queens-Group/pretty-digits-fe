@@ -5,8 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SortSelect() {
+export default function SortSelect({items}) {
   const [age, setAge] = React.useState('');
+  
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -25,8 +26,10 @@ export default function SortSelect() {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        <MenuItem value={'price,asc'}>termurah</MenuItem>
-        <MenuItem value={'price,desc'}>termahal</MenuItem>
+        {items.map((item) => (
+          <MenuItem key={item.name} value={item.value}>{item.name}</MenuItem>
+        ))}
+       
       </Select>
     </FormControl>
   );

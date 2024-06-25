@@ -1,22 +1,21 @@
-
-'use server'
+"use server";
 
 import { signIn, signOut } from "../../auth";
 
-
-
 export async function doLogout() {
-  await signOut({ redirectTo: "/" });
+  await signOut({ redirectTo: "/auth/signin" });
 }
 
-export async function doCredentialLogin(formData) {
+export async function doCredentialLogin(credential) {
   try {
+    console.log({credential})
     const response = await signIn("credentials", {
-      username: formData.get("username"),
-      password: formData.get("password"),
+      user: JSON.stringify(credential),
+      username: credential?.username,
+      password: credential?.password,
       redirect: false,
     });
-    
+
     return response;
   } catch (err) {
     throw err;

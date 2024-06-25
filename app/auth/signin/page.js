@@ -1,11 +1,12 @@
 import { Container } from "@mui/material";
 import React from "react";
-import SignIn  from "../../components/SignIn";
+import SignInForm from "../../components/SignInForm";
+
 
 const SignInPage = () => {
   return (
     <Container maxWidth="xl">
-      <SignIn/>
+      <SignInForm/>
     </Container>
   );
 };
