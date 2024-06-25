@@ -176,4 +176,8 @@
     width: 70%;
     border-bottom-right-radius: 13px;
   }
+
+  .simNumber {
+    font-size: smaller;
+  }
 }

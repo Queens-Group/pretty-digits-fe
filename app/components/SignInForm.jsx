@@ -14,10 +14,11 @@ import IconButton from '@mui/material/IconButton';
 import { Backdrop, CircularProgress } from "@mui/material";
 import ReportIcon from "@mui/icons-material/Report";
 import AppAlert from "./AppAlert";
-import { useRouter } from "next/navigation";
 import { doCredentialLogin } from "../actions";
 import { postSignIn } from "../lib/auth_api";
-import { HomeMaxOutlined, HomeOutlined } from "@mui/icons-material";
+import { HomeOutlined } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+
 
 function Copyright(props) {
   return (
@@ -72,13 +73,14 @@ export default function SignInForm() {
     } catch (error) {
       setIsLoading(false);
       setUnexpectedError(true);
+      
     } finally {
       setIsLoading(false);
     }
   };
 
   const redirectToHomepage = () => {
-    router.push("/");
+    router.push("/")
   };
 
   return (
@@ -122,7 +124,7 @@ export default function SignInForm() {
           <LockOpenOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign Up
+          Sign In
         </Typography>
         <Box
           component="form"
