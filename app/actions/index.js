@@ -6,6 +6,7 @@ export async function doLogout() {
   await signOut({ redirectTo: "/auth/signin" });
 }
 
+
 export async function doCredentialLogin(credential) {
   try {
     const response = await signIn("credentials", {

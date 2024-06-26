@@ -1,5 +1,9 @@
-export const getAvailableProducts = async ({ page, size }) => {
-  const response = await fetch(`${getBaseUrl()}/products/available?page=${page || 0}&size=${size || 20}`);
+export const getAvailableProducts = async ({ page, size, sort }) => {
+  let url = `${getBaseUrl()}/products/available?page=${page}&size=${size}`;
+  if (sort) {
+    url += `&sort=${sort}`;
+  }
+  const response = await fetch(url);
 
   const responseBody = await response.json();
   return responseBody;

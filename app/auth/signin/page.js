@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 
 const SignInPage = async () => {
   const session = await auth();
-
+  
   return (
     <Container maxWidth="xl">
       <SignInForm session={session}/>

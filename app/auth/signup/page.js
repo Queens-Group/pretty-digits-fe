@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 
 const SignUpPage = async () => {
   const session = await auth();
+ 
   return (
     <Container maxWidth="xl" sx={{overflowY: 'hidden'}}>
       <SignUpForm session={session}/>

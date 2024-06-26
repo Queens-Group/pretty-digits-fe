@@ -1,26 +1,27 @@
 "use client";
-import React from "react";
-import styles from "./AddToCartBtn.module.css";
-import AppAlert from "./AppAlert";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ReportIcon from "@mui/icons-material/Report";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
-import { useRouter } from "next/navigation";
+import React from "react";
+import { doLogout } from "../actions";
 import { addItemToCart } from "../lib/cart_api";
+import styles from "./AddToCartBtn.module.css";
+import AppAlert from "./AppAlert";
 
 const AddToCartBtn = ({ productId, accessToken }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isDuplicate, setIsDuplicate] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
-  const router = useRouter();
+
 
   const handleAddToCart = async () => {
     try {
+      console.log({clicked: "true"})
       const response = await addItemToCart(productId, accessToken);
 
       if (response.code === 401 || response.code === 403) {
-        router.push("/auth/signin");
+        await doLogout();
       } else if (response.code === 200) {
         setIsSuccess(true);
       } else if (response.code == 409) {
@@ -64,7 +65,6 @@ const AddToCartBtn = ({ productId, accessToken }) => {
       >
         Add to Cart
       </button>
-      ;
     </div>
   );
 };
