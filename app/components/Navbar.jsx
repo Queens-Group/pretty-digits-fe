@@ -14,6 +14,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { SignInBtn } from "./SignInBtn";
 
 import { Grid } from "@mui/material";
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import MenuDrawer from "./MenuDrawer";
 
 const useStyles = {
   backgroundColor: "#f8f9fa", // Light grey background
@@ -33,11 +36,21 @@ const Navbar = ({ username }) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [drawerState, setDrawerState] = React.useState(false);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setDrawerState(open);
   };
 
   if (username === undefined && path !== "/") router.push("/");
@@ -94,15 +107,20 @@ const Navbar = ({ username }) => {
           <Box sx={{ flexGrow: 0 }}>
             {username ? (
               <Grid container justifyContent="center" alignItems="center">
-                <Grid item sx={{ mr: 2, fontWeight: 500 }}>
+                <Grid item sx={{ mr: 2, fontWeight: 500, display: {xs: "none"} }}>
                   {username}
                 </Grid>
-                <Grid item onClick={handleClick}>
-                  <Tooltip title="Open settings">
-                    <IconButton sx={{ p: 0 }}>
-                      <Avatar alt="Remy Sharp" src="./female_avatar.png" />
-                    </IconButton>
-                  </Tooltip>
+                <Grid item onClick={handleClick} sx={{ mr: 2, display: {xs: "none"} }}>
+                  <IconButton sx={{ p: 0 }}>
+                    <Avatar alt="Default Pic" src="./female_avatar.png" />
+                  </IconButton>
+                </Grid>
+                <Grid item>
+                  <IconButton onClick={toggleDrawer(true)}>
+                    <MenuOutlinedIcon
+                      sx={{ fontSize: "30px", cursor: "pointer" }}
+                    />
+                  </IconButton>
                 </Grid>
               </Grid>
             ) : (
@@ -110,6 +128,7 @@ const Navbar = ({ username }) => {
             )}
           </Box>
         </Toolbar>
+        <MenuDrawer state={drawerState} toggleDrawer={toggleDrawer} />
       </Container>
     </AppBar>
   );

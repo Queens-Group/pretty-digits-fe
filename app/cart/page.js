@@ -9,7 +9,7 @@ const Cart = async () => {
   const session = await auth();
  
   return (
-    <Container maxWidth="xl" sx={{ pt: 15, pr: 5, pl:5 }}>
+    <Container maxWidth="xl" sx={{ mb: "100vh"}}>
        <Navbar username={session?.user?.username} />
      
     </Container>

@@ -21,9 +21,13 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
   const loadMoreProducts = async () => {
     const response = await getAvailableProducts({ page, size });
     const newProducts = response?.data?.content || [];
-    setProducts([...products, ...newProducts]);
+    const sorted = [...products, ...newProducts].sort(
+      sort === "asc" ? sortPriceAsc : sortPriceDesc
+    );
+    setProducts(sorted);
     setPage((prev) => prev + 1);
     setTotalElements(response?.data?.page?.totalElements);
+    
   };
 
   const sortPriceAsc = (a, b) => a.price - b.price;
@@ -43,10 +47,14 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
     if (inView) {
       loadMoreProducts();
     }
+   
+  }, [inView]);
+
+  useEffect(()=> {
     if (sort) {
       sortProducts();
     }
-  }, [inView, sort]);
+  }, [sort])
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>

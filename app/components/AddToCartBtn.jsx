@@ -7,6 +7,8 @@ import { doLogout } from "../actions";
 import { addItemToCart } from "../lib/cart_api";
 import styles from "./AddToCartBtn.module.css";
 import AppAlert from "./AppAlert";
+import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+
 
 const AddToCartBtn = ({ productId, accessToken }) => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -63,7 +65,7 @@ const AddToCartBtn = ({ productId, accessToken }) => {
         className={styles.addToCartButton}
         onClick={() => handleAddToCart()}
       >
-        Add to Cart
+        <AddShoppingCartOutlinedIcon className={styles.iconCart}/>
       </button>
     </div>
   );
