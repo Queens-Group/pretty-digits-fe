@@ -12,8 +12,9 @@ const styles = {
   marginLeft: "auto",
   marginRight: "auto",
   zIndex: "9999",
-  position: "absolute",
+  position: "fixed",
   width: { xs: "95%", md: "40%", xl: "40%" },
+  top: 0,
 };
 
 const AppAlert = ({

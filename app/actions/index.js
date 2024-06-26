@@ -8,7 +8,6 @@ export async function doLogout() {
 
 export async function doCredentialLogin(credential) {
   try {
-    console.log({credential})
     const response = await signIn("credentials", {
       user: JSON.stringify(credential),
       username: credential?.username,

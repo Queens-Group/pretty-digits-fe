@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 import { Backdrop, CircularProgress } from "@mui/material";
 import ReportIcon from "@mui/icons-material/Report";
 import AppAlert from "./AppAlert";
@@ -38,11 +38,19 @@ function Copyright(props) {
   );
 }
 
-export default function SignInForm() {
+export default function SignInForm({session}) {
   const [errors, setErrors] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
   const router = useRouter();
+
+  const redirectToHomepage = () => {
+    router.replace("/");
+  };
+
+  if (session) {
+    redirectToHomepage();
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,15 +81,12 @@ export default function SignInForm() {
     } catch (error) {
       setIsLoading(false);
       setUnexpectedError(true);
-      
     } finally {
       setIsLoading(false);
     }
   };
 
-  const redirectToHomepage = () => {
-    router.push("/")
-  };
+  
 
   return (
     <Container component="main" maxWidth="xs" sx={{ overflow: "hidden" }}>
@@ -110,13 +115,13 @@ export default function SignInForm() {
           alignItems: "center",
         }}
       >
-        <Grid
-          container
-          justifyContent="flex-start"
-        >
+        <Grid container justifyContent="flex-start">
           <Grid item>
             <IconButton onClick={() => router.push("/")}>
-              <HomeOutlined fontSize="large" sx={{borderBottom: "solid 1px black"}}/>
+              <HomeOutlined
+                fontSize="large"
+                sx={{ borderBottom: "solid 1px black" }}
+              />
             </IconButton>
           </Grid>
         </Grid>

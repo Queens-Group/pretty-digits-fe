@@ -15,10 +15,10 @@ export default function SortSelect({items}) {
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">Sort</InputLabel>
+      <InputLabel id="sort-select-price">Sort</InputLabel>
       <Select
-        labelId="demo-select-small-label"
-        id="demo-select-small"
+        labelId="sort-select-price-label"
+        id="sort-select-price"
         value={age}
         label="Sort"
         onChange={handleChange}

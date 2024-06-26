@@ -35,13 +35,16 @@ function Copyright(props) {
   );
 }
 
-export default function SignUpForm() {
+export default function SignUpForm({session}) {
   const [errors, setErrors] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
   const router = useRouter();
 
+  if (session) {
+    router.replace("/")
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors({});
