@@ -4,12 +4,15 @@ import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import { getUserInfo } from "./lib/auth_api";
 import { getAvailableProducts } from "./lib/product_api";
+import { doLogout } from "./actions";
 
 export default async function Home() {
   let session = await auth();
+  
   const userInfo = await getUserInfo(session?.user?.accessToken);
 
-  if (userInfo?.code === 401) {
+
+  if (userInfo?.code === 401 || userInfo === null) {
     session = null;
   }
 

@@ -9,15 +9,12 @@ import * as React from "react";
 import WifiTetheringErrorTwoToneIcon from "@mui/icons-material/WifiTetheringErrorTwoTone";
 import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
-import Tooltip from "@mui/material/Tooltip";
-import { usePathname, useRouter } from "next/navigation";
-import { SignInBtn } from "./SignInBtn";
+import { usePathname } from "next/navigation";
 
-import { Grid } from "@mui/material";
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MenuDrawer from "./MenuDrawer";
+import { Grid } from "@mui/material";
 import { doLogout } from "../actions";
+import MenuDrawer from "./MenuDrawer";
 
 const useStyles = {
   backgroundColor: "#f8f9fa", // Light grey background
@@ -33,13 +30,7 @@ const useStyles = {
 
 const Navbar = ({ username }) => {
   const path = usePathname();
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawerState, setDrawerState] = React.useState(false);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -52,7 +43,13 @@ const Navbar = ({ username }) => {
     setDrawerState(open);
   };
 
-  if (username === undefined) doLogout();
+  React.useEffect(() => {
+    if (username === undefined && path !== "/") {
+      doLogout("/");
+    } else if (username === undefined && path === "/") {
+      doLogout();
+    }
+  });
 
   return (
     <AppBar position="fixed" sx={useStyles}>
@@ -111,11 +108,7 @@ const Navbar = ({ username }) => {
               >
                 {username}
               </Grid>
-              <Grid
-                item
-                onClick={handleClick}
-                sx={{ mr: 2, display: { xs: "none" } }}
-              >
+              <Grid item sx={{ mr: 2, display: { xs: "none" } }}>
                 <IconButton sx={{ p: 0 }}>
                   <Avatar alt="Default Pic" src="./female_avatar.png" />
                 </IconButton>
@@ -130,11 +123,13 @@ const Navbar = ({ username }) => {
             </Grid>
           </Box>
         </Toolbar>
-        <MenuDrawer
+       <div style={{position: "absolute", zIndex: 99999}}>
+       <MenuDrawer
           state={drawerState}
           toggleDrawer={toggleDrawer}
           username={username}
         />
+       </div>
       </Container>
     </AppBar>
   );

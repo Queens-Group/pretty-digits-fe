@@ -19,11 +19,10 @@ const AddToCartBtn = ({ productId, accessToken }) => {
 
   const handleAddToCart = async () => {
     try {
-      console.log({clicked: "true"})
       const response = await addItemToCart(productId, accessToken);
 
       if (response.code === 401 || response.code === 403) {
-        await doLogout();
+        await doLogout("/auth/signin");
       } else if (response.code === 200) {
         setIsSuccess(true);
       } else if (response.code == 409) {

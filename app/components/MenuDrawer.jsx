@@ -33,7 +33,7 @@ export default function MenuDrawer({ state, toggleDrawer, username }) {
               <ListItemIcon>
                 <Avatar alt="Random Pic" src="./female_avatar.png" />
               </ListItemIcon>
-              <ListItemText primary={username} />
+              <ListItemText primary={`Hi, ${username}`} />
             </ListItemButton>
           </ListItem>
         ) : (

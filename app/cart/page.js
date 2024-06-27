@@ -7,9 +7,10 @@ const Cart = async () => {
   let session = await auth();
   let userInfo = await getUserInfo(session?.user?.accessToken)
   
-  if (userInfo.code === 401) {
+  if (userInfo?.code === 401 || userInfo === null) {
      session = null;
   }
+  
   return (
     <Container maxWidth="xl" sx={{ mb: "100vh" }}>
       <Navbar username={session?.user?.username}/>

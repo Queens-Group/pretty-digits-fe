@@ -2,8 +2,13 @@
 
 import { signIn, signOut } from "../../auth";
 
-export async function doLogout() {
-  await signOut({ redirectTo: "/" });
+export async function doLogout(redirectTo) {
+  if (redirectTo) {
+    await signOut({redirectTo});
+  } else {
+    await signOut({redirect: false});
+  }
+  
 }
 
 

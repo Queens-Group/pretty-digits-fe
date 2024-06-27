@@ -26,7 +26,7 @@ export default function SignInForm({ session }) {
   const router = useRouter();
 
   const redirectToHomepage = () => {
-    router.replace("/");
+    router.push("/");
   };
 
   if (session) redirectToHomepage();
@@ -66,7 +66,11 @@ export default function SignInForm({ session }) {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ overflow: "hidden" }}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{ overflow: "hidden", mb: "100vh" }}
+    >
       {session ? null : (
         <>
           {" "}
