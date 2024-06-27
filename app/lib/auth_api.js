@@ -29,6 +29,15 @@ export const postJson = async ({ uri, body, headers }) => {
   return responseBody;
 };
 
+export const getUserInfo = (accessToken) => {
+   return fetch(`${getBaseUrl()}/auth/userInfo`, {
+     headers: {
+       Authorization: `Bearer ${accessToken}`
+     }
+   }).then(res => res.json())
+    .catch(err => null)
+}
+
 const getBaseUrl = () => {
   return process.env.BASE_BE_URL || "http://localhost:8080/api/v1";
 };

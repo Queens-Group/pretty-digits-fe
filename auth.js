@@ -1,14 +1,12 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-
-
 const providers = [
   Credentials({
     credentials: {
       user: {},
       username: {},
-      password: {}
+      password: {},
     },
     async authorize(credentials) {
       return JSON.parse(credentials.user);

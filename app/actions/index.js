@@ -3,7 +3,7 @@
 import { signIn, signOut } from "../../auth";
 
 export async function doLogout() {
-  await signOut({ redirectTo: "/auth/signin" });
+  await signOut({ redirectTo: "/" });
 }
 
 

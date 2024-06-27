@@ -14,21 +14,10 @@ const sortPrice = [
 const ProductList = ({ initialProducts, size, accessToken }) => {
   const [page, setPage] = React.useState(1);
   const [products, setProducts] = React.useState(initialProducts);
+  const [error, setError] = React.useState(false);
   const [sort, setSort] = React.useState("");
   const [totalElements, setTotalElements] = React.useState(0);
   const { ref, inView } = useInView();
-
-  const loadMoreProducts = async () => {
-    const response = await getAvailableProducts({ page, size });
-    const newProducts = response?.data?.content || [];
-    const sorted = [...products, ...newProducts].sort(
-      sort === "asc" ? sortPriceAsc : sortPriceDesc
-    );
-    setProducts(sorted);
-    setPage((prev) => prev + 1);
-    setTotalElements(response?.data?.page?.totalElements);
-    
-  };
 
   const sortPriceAsc = (a, b) => a.price - b.price;
   const sortPriceDesc = (a, b) => b.price - a.price;
@@ -44,17 +33,35 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
   };
 
   useEffect(() => {
+    let isSubscribed = true;
+    const loadMoreProducts = async () => {
+      const response = await getAvailableProducts({ page, size });
+      const newProducts = response?.data?.content || [];
+      const sorted = [...products, ...newProducts].sort(
+        sort === "asc" ? sortPriceAsc : sortPriceDesc
+      );
+      if (isSubscribed) {
+        setProducts(sorted);
+        setPage((prev) => prev + 1);
+        setTotalElements(response?.data?.page?.totalElements);
+        setError(false);
+      }
+    };
     if (inView) {
-      loadMoreProducts();
+      loadMoreProducts().catch((err) => {
+        if (isSubscribed) {
+          setError(true);
+        }
+      });
     }
-   
+    return () => (isSubscribed = false);
   }, [inView]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (sort) {
       sortProducts();
     }
-  }, [sort])
+  }, [sort]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
@@ -74,14 +81,14 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
             price={product.price}
             validity={product.validityPeriod}
             description={product.description}
-            provider={product.type}
+            provider={product.provider}
             productId={product.id}
             accessToken={accessToken}
           />
         ))}
       </div>
 
-      {products.length !== totalElements && (
+      {products.length !== totalElements && !error && (
         <Skeleton
           variant="rectangular"
           sx={{
@@ -91,7 +98,7 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
           }}
         />
       )}
-      {products.length === totalElements && (
+      {products.length === totalElements && !error && (
         <div
           style={{
             textAlign: "center",
@@ -101,6 +108,19 @@ const ProductList = ({ initialProducts, size, accessToken }) => {
           }}
         >
           No More Products
+        </div>
+      )}
+
+      {error && (
+        <div
+          style={{
+            textAlign: "center",
+            color: "#888",
+            padding: "10px",
+            fontSize: "1rem",
+          }}
+        >
+          Failed to fetch data. Please refresh the page or try again later.
         </div>
       )}
       <div ref={ref}></div>

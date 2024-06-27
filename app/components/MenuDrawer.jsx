@@ -1,11 +1,12 @@
 "use client";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
-import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
+import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import { Avatar } from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -13,13 +14,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import * as React from "react";
 import { doLogout } from "../actions";
 
-export default function MenuDrawer({state, toggleDrawer}) {
- 
-
+export default function MenuDrawer({ state, toggleDrawer, username }) {
   const list = () => (
     <Box
       sx={{
@@ -30,42 +27,73 @@ export default function MenuDrawer({state, toggleDrawer}) {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem key={"profile"} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <Avatar alt="Random Pic" src="./female_avatar.png" />
-            </ListItemIcon>
-            <ListItemText primary={"Ferika"} />
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        {[
-          { name: "Cart", icon: <LocalMallOutlinedIcon />, target: "/cart" },
-          { name: "Order History", icon: <ReceiptLongOutlinedIcon />, target: "/orders" },
-          { name: "Account", icon: <ManageAccountsOutlinedIcon />, target: "#" },
-          { name: "Support", icon: <SupportAgentOutlinedIcon />, target: "#" },
-        ].map((item) => (
-          <ListItem key={item.name} disablePadding>
-            <ListItemButton href={item.target}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.name} />
+        {username ? (
+          <ListItem key={"profile"} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Avatar alt="Random Pic" src="./female_avatar.png" />
+              </ListItemIcon>
+              <ListItemText primary={username} />
             </ListItemButton>
           </ListItem>
-        ))}
+        ) : (
+          <ListItem key={"signin"} disablePadding>
+            <ListItemButton href="/auth/signin">
+              <ListItemIcon>
+                <LockOpenOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Sign In"} />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
-      <Divider/>
-      <List>
-        <ListItem key={"signout"} disablePadding>
-          <ListItemButton onClick={async () => await doLogout()}>
-            <ListItemIcon>
-              <ExitToAppOutlinedIcon/>
-            </ListItemIcon>
-            <ListItemText primary={"Sign Out"} />
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <Divider />
+      {username && (
+        <>
+          <List>
+            {[
+              {
+                name: "Cart",
+                icon: <LocalMallOutlinedIcon />,
+                target: "/cart",
+              },
+              {
+                name: "Order History",
+                icon: <ReceiptLongOutlinedIcon />,
+                target: "/orders",
+              },
+              {
+                name: "Account",
+                icon: <ManageAccountsOutlinedIcon />,
+                target: "#",
+              },
+              {
+                name: "Support",
+                icon: <SupportAgentOutlinedIcon />,
+                target: "#",
+              },
+            ].map((item) => (
+              <ListItem key={item.name} disablePadding>
+                <ListItemButton href={item.target}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            <ListItem key={"signout"} disablePadding>
+              <ListItemButton onClick={async () => await doLogout()}>
+                <ListItemIcon>
+                  <ExitToAppOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Sign Out"} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </>
+      )}
     </Box>
   );
 

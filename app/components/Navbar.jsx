@@ -17,6 +17,7 @@ import { Grid } from "@mui/material";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MenuDrawer from "./MenuDrawer";
+import { doLogout } from "../actions";
 
 const useStyles = {
   backgroundColor: "#f8f9fa", // Light grey background
@@ -31,11 +32,9 @@ const useStyles = {
 };
 
 const Navbar = ({ username }) => {
-  const router = useRouter();
   const path = usePathname();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
   const [drawerState, setDrawerState] = React.useState(false);
 
   const handleClick = (event) => {
@@ -53,7 +52,7 @@ const Navbar = ({ username }) => {
     setDrawerState(open);
   };
 
-  if (username === undefined && path !== "/") router.push("/");
+  if (username === undefined) doLogout();
 
   return (
     <AppBar position="fixed" sx={useStyles}>
@@ -67,7 +66,7 @@ const Navbar = ({ username }) => {
               variant="h6"
               noWrap
               component="a"
-              href="#"
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -105,30 +104,37 @@ const Navbar = ({ username }) => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {username ? (
-              <Grid container justifyContent="center" alignItems="center">
-                <Grid item sx={{ mr: 2, fontWeight: 500, display: {xs: "none"} }}>
-                  {username}
-                </Grid>
-                <Grid item onClick={handleClick} sx={{ mr: 2, display: {xs: "none"} }}>
-                  <IconButton sx={{ p: 0 }}>
-                    <Avatar alt="Default Pic" src="./female_avatar.png" />
-                  </IconButton>
-                </Grid>
-                <Grid item>
-                  <IconButton onClick={toggleDrawer(true)}>
-                    <MenuOutlinedIcon
-                      sx={{ fontSize: "30px", cursor: "pointer" }}
-                    />
-                  </IconButton>
-                </Grid>
+            <Grid container justifyContent="center" alignItems="center">
+              <Grid
+                item
+                sx={{ mr: 2, fontWeight: 500, display: { xs: "none" } }}
+              >
+                {username}
               </Grid>
-            ) : (
-              <SignInBtn />
-            )}
+              <Grid
+                item
+                onClick={handleClick}
+                sx={{ mr: 2, display: { xs: "none" } }}
+              >
+                <IconButton sx={{ p: 0 }}>
+                  <Avatar alt="Default Pic" src="./female_avatar.png" />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={toggleDrawer(true)}>
+                  <MenuOutlinedIcon
+                    sx={{ fontSize: "30px", cursor: "pointer" }}
+                  />
+                </IconButton>
+              </Grid>
+            </Grid>
           </Box>
         </Toolbar>
-        <MenuDrawer state={drawerState} toggleDrawer={toggleDrawer} />
+        <MenuDrawer
+          state={drawerState}
+          toggleDrawer={toggleDrawer}
+          username={username}
+        />
       </Container>
     </AppBar>
   );

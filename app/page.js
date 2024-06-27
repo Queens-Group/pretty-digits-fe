@@ -2,10 +2,17 @@ import { auth } from "@/auth";
 import { Container } from "@mui/material";
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
+import { getUserInfo } from "./lib/auth_api";
 import { getAvailableProducts } from "./lib/product_api";
 
 export default async function Home() {
-  const session = await auth();
+  let session = await auth();
+  const userInfo = await getUserInfo(session?.user?.accessToken);
+
+  if (userInfo?.code === 401) {
+    session = null;
+  }
+
   const SIZE_PER_PAGE = 20;
   let products = [];
   try {
