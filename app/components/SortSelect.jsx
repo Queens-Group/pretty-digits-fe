@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import styles from "./SortSelect.module.css"
+import styles from "./css/SortSelect.module.css"
 
 export default function SortSelect({ items, onSelect, placeHolder }) {
   return (

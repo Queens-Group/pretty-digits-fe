@@ -1,7 +1,7 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import styles from "./Footer.module.css";
+import styles from "./css/Footer.module.css";
 
 const Footer = () => {
   return (

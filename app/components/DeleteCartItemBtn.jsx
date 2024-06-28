@@ -1,32 +1,29 @@
 "use client";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ReportIcon from "@mui/icons-material/Report";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import React from "react";
 import { doLogout } from "../actions";
-import { addItemToCart } from "../lib/cart_api";
-import styles from "./css/AddToCartBtn.module.css";
+import { addItemToCart, deleteCartItemById } from "../lib/cart_api";
+import styles from "./css/DeleteCartItemBtn.module.css";
 import AppAlert from "./AppAlert";
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 
-
-const AddToCartBtn = ({ productId, accessToken }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
+const DeleteCartItemBtn = ({ cartId, productId, accessToken }) => {
   const [isSuccess, setIsSuccess] = React.useState(false);
-  const [isDuplicate, setIsDuplicate] = React.useState(false);
+  const [isDuplicate, setIsError] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
 
-
-  const handleAddToCart = async () => {
+  const handleDeleteItem = async () => {
     try {
-      const response = await addItemToCart(productId, accessToken);
+      const response = await deleteCartItemById(cartId, productId, accessToken);
 
       if (response.code === 401 || response.code === 403) {
         await doLogout("/auth/signin");
       } else if (response.code === 200) {
         setIsSuccess(true);
-      } else if (response.code == 409) {
-        setIsDuplicate(true);
+      } else if (response.code >= 500) {
+        setIsError(true);
       } else {
         setUnexpectedError(true);
       }
@@ -37,19 +34,19 @@ const AddToCartBtn = ({ productId, accessToken }) => {
   return (
     <div>
       <AppAlert
-        title={"Success Add Item to Cart"}
+        title={"Success Delete Address"}
         color="success"
-        message="Item has been added to cart"
+        message="Address has been deleted"
         show={isSuccess}
         handleClose={() => setIsSuccess(false)}
         icon={<CheckCircleIcon />}
       />
       <AppAlert
-        title={"Failed added item to cart"}
+        title={"Failed Delete Address"}
         color="warning"
-        message="This item is already in your cart"
+        message="Something went wrong. Please try again later"
         show={isDuplicate}
-        handleClose={() => setIsDuplicate(false)}
+        handleClose={() => setIsError(false)}
         icon={<ReportProblemOutlinedIcon />}
       />
       <AppAlert
@@ -60,14 +57,11 @@ const AddToCartBtn = ({ productId, accessToken }) => {
         handleClose={() => setUnexpectedError(false)}
         icon={<ReportIcon />}
       />
-      <button
-        className={styles.addToCartButton}
-        onClick={() => handleAddToCart()}
-      >
-        <AddShoppingCartOutlinedIcon className={styles.iconCart}/>
+      <button className={styles.deleteBtn} onClick={() => handleDeleteItem()}>
+        <DeleteOutlinedIcon className={styles.iconDelete} />
       </button>
     </div>
   );
 };
 
-export default AddToCartBtn;
+export default DeleteCartItemBtn;

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from "./ProductCard.module.css"
+import styles from "./css/ProductCard.module.css"
 import AddToCartBtn from './AddToCartBtn'
 import dayjs from 'dayjs'
 import { formatPrice, formatSimNumber } from '../lib/common_utils'

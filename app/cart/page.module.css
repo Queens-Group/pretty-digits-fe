@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  padding: 0;
+  margin-top: 80px;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+  border: solid 2px red;
+}
+
+.leftContainer {
+  flex: 2;
+  display: flex;
+  border: solid 2px blue;
+  height: 100%;
+}
+
+.rightContainer {
+  display: flex;
+  flex: 1;
+  border: solid 2px green;
+  height: 100%;
+}

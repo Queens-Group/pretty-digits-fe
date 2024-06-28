@@ -18,8 +18,22 @@ export const postJson = async ({ uri, body, headers }, accessToken) => {
 };
 
 export const addItemToCart = async (productId, accessToken) => {
-  return await postJson({
-    uri: "/add-item",
-    body: {productId},
-  }, accessToken);
-}
+  return await postJson(
+    {
+      uri: "/add-item",
+      body: { productId },
+    },
+    accessToken
+  );
+};
+
+export const deleteCartItemById = async (cartId, cartItemId, accessToken) => {
+  const uri = `${getBaseUrl()}/${cartId}/item/${cartItemId}`;
+  const response = await fetch(uri, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return await response.json();
+};
