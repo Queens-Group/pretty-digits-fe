@@ -6,7 +6,7 @@ import DeleteCartItemBtn from "./DeleteCartItemBtn";
 export function CartItemCard({
   cartId,
   provider,
-  productId,
+ itemId,
   simNumber,
   price,
   validity,
@@ -23,8 +23,7 @@ export function CartItemCard({
         <div className={styles.price}>{formatPrice(price)}</div>
         <div className={styles.validity}>
           <p className={styles.validityText}>
-            expiry:{" "}
-            {validity ? dayjs(validity).format("d MMM YYYY") : validity}
+            expiry: {validity ? dayjs(validity).format("d MMM YYYY") : validity}
           </p>
         </div>
         <div className={styles.description}>{description}</div>
@@ -32,7 +31,7 @@ export function CartItemCard({
       <div className={styles.rightSide}>
         <DeleteCartItemBtn
           cartId={cartId}
-          productId={productId}
+          itemId={itemId}
           accessToken={accessToken}
         />
       </div>

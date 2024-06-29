@@ -9,15 +9,15 @@ import { addItemToCart, deleteCartItemById } from "../lib/cart_api";
 import styles from "./css/DeleteCartItemBtn.module.css";
 import AppAlert from "./AppAlert";
 
-const DeleteCartItemBtn = ({ cartId, productId, accessToken }) => {
+const DeleteCartItemBtn = ({ cartId, itemId, accessToken }) => {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isDuplicate, setIsError] = React.useState(false);
   const [error, setUnexpectedError] = React.useState(false);
 
   const handleDeleteItem = async () => {
     try {
-      const response = await deleteCartItemById(cartId, productId, accessToken);
-
+      const response = await deleteCartItemById(cartId, itemId, accessToken);
+      console.log({response})
       if (response.code === 401 || response.code === 403) {
         await doLogout("/auth/signin");
       } else if (response.code === 200) {
@@ -34,15 +34,15 @@ const DeleteCartItemBtn = ({ cartId, productId, accessToken }) => {
   return (
     <div>
       <AppAlert
-        title={"Success Delete Address"}
+        title={"Success Remove item"}
         color="success"
-        message="Address has been deleted"
+        message="Item has been removed"
         show={isSuccess}
         handleClose={() => setIsSuccess(false)}
         icon={<CheckCircleIcon />}
       />
       <AppAlert
-        title={"Failed Delete Address"}
+        title={"Failed Remove Item"}
         color="warning"
         message="Something went wrong. Please try again later"
         show={isDuplicate}

@@ -28,12 +28,25 @@ export const addItemToCart = async (productId, accessToken) => {
 };
 
 export const deleteCartItemById = async (cartId, cartItemId, accessToken) => {
+ 
   const uri = `${getBaseUrl()}/${cartId}/item/${cartItemId}`;
   const response = await fetch(uri, {
-    method: "PATCH",
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return await response.json();
+};
+
+export const getCart = async (accessToken) => {
+  const uri = `${getBaseUrl()}/cart`;
+  const response = await fetch(uri, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
   return await response.json();
-};
+}
